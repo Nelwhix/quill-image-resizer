@@ -1,7 +1,8 @@
 import Quill from 'quill'
-import { deepmerge } from "deepmerge-ts";
+import BlotSpec from './specs/BlotSpec';
+import deepmerge from 'deepmerge';
 import { Options } from './Options';
-const dontMerge = (destination: Array<any>, source: Array<any>) => source;
+const dontMerge = (destination: [], source: []) => source;
 
 
 
@@ -16,6 +17,17 @@ export default class BlotFormatter {
     constructor(quill: Quill, options = {}) {
         this.quill = quill;
         this.options = deepmerge()
+    }
+
+    update() {
+        
+    }
+
+    repositionOverlay() {
+        if (!this.currentSpec) {
+            return
+        }
+        const overlayTarget = this.currentSpec.
     }
     
 }

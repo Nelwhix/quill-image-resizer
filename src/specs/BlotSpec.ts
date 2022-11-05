@@ -15,4 +15,12 @@ export default class BlotSpec {
     getActions(): Action {
         return [AlignAction, ResizeAction, DeleteAction];
     }
+
+    getTargetElement(): HTMLElement | null {
+        return null
+    }
+
+    getOverlayElement(): HTMLElement | null {
+        return this.getTargetElement()
+    }
 }
