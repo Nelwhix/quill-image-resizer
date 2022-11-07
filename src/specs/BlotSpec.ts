@@ -2,6 +2,7 @@ import BlotFormatter from "../BlotFormatter";
 import AlignAction from '../actions/align/AlignAction';
 import ResizeAction from '../actions/ResizeAction';
 import DeleteAction from '../actions/DeleteAction';
+import Action from "../actions/Action";
 
 export default class BlotSpec {
     formatter: BlotFormatter
@@ -12,7 +13,7 @@ export default class BlotSpec {
 
     init(): void {}
 
-    getActions(): Action {
+    getActions(): Action[] {
         return [AlignAction, ResizeAction, DeleteAction];
     }
 
@@ -22,5 +23,13 @@ export default class BlotSpec {
 
     getOverlayElement(): HTMLElement | null {
         return this.getTargetElement()
+    }
+
+    setSelection() {
+        
+    }
+
+    onHide() {
+
     }
 }

@@ -6,7 +6,7 @@ const LEFT_ALIGN = "left";
 const CENTER_ALIGN = "center";
 const RIGHT_ALIGN = "right";
 
-export default class DefaultAligner {
+export default class Aligner {
     alignments: Object
     alignAttribute: string;
     applyStyle: boolean;

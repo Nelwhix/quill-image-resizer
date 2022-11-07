@@ -1,20 +1,23 @@
 import BlotFormatter from "../../BlotFormatter";
-import { Aligner } from "./Aligner";
 import { Alignment } from "./Alignment";
+import { Aligner } from "./Aligner";
+import DefaultAligner from "../align/DefaultAligner"
 
-export default class DefaultToolbar {
-    toolbar: HTMLElement | null;
-    buttons: HTMLElement[];
+export default class Toolbar {
+    toolbar: HTMLDivElement | null;
+    buttons: HTMLSpanElement[];
 
     constructor() {
         this.toolbar = null
         this.buttons = []
     }
 
-    create(formatter: BlotFormatter, aligner: Aligner) {
+    create(formatter: BlotFormatter, aligner: DefaultAligner): Node {
         const toolbar = document.createElement('div');
         toolbar.classList.add(formatter.options.align.toolbar.mainClassName)
         this.addToolbarStyle(formatter, toolbar)
+        this.addButtons(formatter, toolbar, aligner)
+        return toolbar
     }
 
     addToolbarStyle(formatter: BlotFormatter, toolbar: HTMLElement) {
@@ -23,7 +26,7 @@ export default class DefaultToolbar {
         }
     }
 
-    addButtons(formatter: BlotFormatter, toolbar: HTMLElement, aligner: Aligner) {
+    addButtons(formatter: BlotFormatter, toolbar: HTMLDivElement, aligner: DefaultAligner) {
         aligner.getAlignments().forEach((alignment, i) => {
             const button = document.createElement('span')
             button.classList.add(formatter.options.align.toolbar.buttonClassName)
@@ -32,11 +35,28 @@ export default class DefaultToolbar {
                 this.onButtonClick(button, formatter, alignment, aligner)
             })
 
-            
+            this.preselectButton(button, alignment, formatter, aligner)
+            this.addButtonStyle(button, i, formatter)
+            this.buttons.push(button)
+            toolbar.appendChild(button)
         })
     }
 
-    onButtonClick(button: HTMLElement, formatter: BlotFormatter, alignment: Alignment, aligner: Aligner) {
+    addButtonStyle(button: any, index: number, formatter: BlotFormatter) {
+        if (formatter.options.align.toolbar.buttonStyle) {
+            Object.assign(button.style, formatter.options.align.toolbar.buttonStyle);
+
+            if (index > 0) {
+                button.style.borderLeftWidth = '0'
+            }
+        }
+
+        if (formatter.options.align.toolbar.svgStyle) {
+            Object.assign(button.children[0].style, formatter.options.align.toolbar.svgStyle)
+        }
+    }
+
+    onButtonClick(button: HTMLElement, formatter: BlotFormatter, alignment: Alignment, aligner: DefaultAligner) {
         if (!formatter.currentSpec) {
             return;
         }
@@ -57,7 +77,7 @@ export default class DefaultToolbar {
         }
     }
 
-    clickButton(button: HTMLElement, alignTarget: HTMLElement, formatter: BlotFormatter, alignment: Alignment, aligner: Aligner) {
+    clickButton(button: HTMLElement, alignTarget: HTMLElement, formatter: BlotFormatter, alignment: Alignment, aligner: DefaultAligner) {
         this.buttons.forEach((b) => { this.deselectButtton(formatter, b)})
         
         if (aligner.isAligned(alignTarget, alignment)) {
@@ -74,14 +94,14 @@ export default class DefaultToolbar {
         formatter.update()
     }
 
-    selectButton(formatter: BlotFormatter, button: HTMLElement) {
+    selectButton(formatter: BlotFormatter, button: HTMLSpanElement) {
         button.classList.add('is-selected')
         if (formatter.options.align.toolbar.addButtonSelectStyle) {
             button.style.setProperty('filter', 'invert(20%)')
         }
     }
 
-    preselectButton(button: HTMLElement, alignment: Alignment, formatter: BlotFormatter, aligner: Aligner) {
+    preselectButton(button: HTMLSpanElement, alignment: Alignment, formatter: BlotFormatter, aligner: Aligner) {
         if (!formatter.currentSpec) {
             return;
         }
