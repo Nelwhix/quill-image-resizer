@@ -1,9 +1,10 @@
 import BlotFormatter from "../../BlotFormatter";
 import { Alignment } from "./Alignment";
 import { Aligner } from "./Aligner";
+import { Toolbar } from "./Toolbar"
 import DefaultAligner from "../align/DefaultAligner"
 
-export default class Toolbar {
+export default class DefaultToolbar {
     toolbar: HTMLDivElement | null;
     buttons: HTMLSpanElement[];
 
@@ -12,21 +13,23 @@ export default class Toolbar {
         this.buttons = []
     }
 
-    create(formatter: BlotFormatter, aligner: DefaultAligner): Node {
+    create(formatter: BlotFormatter, aligner: Aligner): Node {
         const toolbar = document.createElement('div');
         toolbar.classList.add(formatter.options.align.toolbar.mainClassName)
         this.addToolbarStyle(formatter, toolbar)
         this.addButtons(formatter, toolbar, aligner)
-        return toolbar
+        
+        this.toolbar = toolbar;
+        return this.toolbar
     }
 
-    addToolbarStyle(formatter: BlotFormatter, toolbar: HTMLElement) {
+    addToolbarStyle(formatter: BlotFormatter, toolbar: HTMLDivElement) {
         if (formatter.options.align.toolbar.mainStyle) {
             Object.assign(toolbar.style, formatter.options.align.toolbar.mainStyle)
         }
     }
 
-    addButtons(formatter: BlotFormatter, toolbar: HTMLDivElement, aligner: DefaultAligner) {
+    addButtons(formatter: BlotFormatter, toolbar: HTMLDivElement, aligner: Aligner) {
         aligner.getAlignments().forEach((alignment, i) => {
             const button = document.createElement('span')
             button.classList.add(formatter.options.align.toolbar.buttonClassName)
@@ -56,7 +59,7 @@ export default class Toolbar {
         }
     }
 
-    onButtonClick(button: HTMLElement, formatter: BlotFormatter, alignment: Alignment, aligner: DefaultAligner) {
+    onButtonClick(button: HTMLElement, formatter: BlotFormatter, alignment: Alignment, aligner: Aligner) {
         if (!formatter.currentSpec) {
             return;
         }
@@ -77,8 +80,10 @@ export default class Toolbar {
         }
     }
 
-    clickButton(button: HTMLElement, alignTarget: HTMLElement, formatter: BlotFormatter, alignment: Alignment, aligner: DefaultAligner) {
-        this.buttons.forEach((b) => { this.deselectButtton(formatter, b)})
+    clickButton(button: HTMLElement, alignTarget: HTMLElement, formatter: BlotFormatter, alignment: Alignment, aligner: Aligner) {
+        this.buttons.forEach((b) => { 
+            this.deselectButtton(formatter, b)
+        })
         
         if (aligner.isAligned(alignTarget, alignment)) {
             if (formatter.options.align.toolbar.allowDeselect) {

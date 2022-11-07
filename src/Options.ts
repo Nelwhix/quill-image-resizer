@@ -1,4 +1,4 @@
-
+import BlotSpec from "./specs/BlotSpec"
 
 export type Options = {
     specs: BlotSpec,
@@ -14,7 +14,7 @@ export type ResizeOptions = {
 
 export type OverlayOptions = {
     className: string,
-    style: null | Object
+    style: Object | null
 }
 
 export type AlignOptions = {

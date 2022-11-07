@@ -1,6 +1,7 @@
 import Quill from 'quill'
 import BlotSpec from './specs/BlotSpec';
 import deepmerge from 'deepmerge';
+import Action from './actions/Action';
 import { Options } from './Options';
 const dontMerge = (destination: [], source: []) => source;
 

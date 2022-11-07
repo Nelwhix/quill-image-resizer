@@ -1,6 +1,6 @@
 import { Alignment } from "./Alignment";
 
-export type Aligner = {
+export interface Aligner {
     getAlignments(): Alignment[]
     isAligned(el: HTMLElement, alignment: Alignment): boolean
     clear(el: HTMLElement): void

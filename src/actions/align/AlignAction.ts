@@ -1,7 +1,9 @@
 import BlotFormatter from "../../BlotFormatter";
 import Action from "../Action";
-import Aligner from "./DefaultAligner";
+import DefaultAligner from "./DefaultAligner";
+import { Aligner } from "./Aligner";
 import Toolbar from "./DefaultToolbar";
+import DefaultToolbar from "./DefaultToolbar";
 
 export default class AlignAction extends Action {
     toolbar: Toolbar;
@@ -9,8 +11,8 @@ export default class AlignAction extends Action {
 
     constructor(formatter: BlotFormatter) {
         super(formatter)
-        this.aligner = new Aligner(formatter.options.align)
-        this.toolbar = new Toolbar()
+        this.aligner = new DefaultAligner(formatter.options.align)
+        this.toolbar = new DefaultToolbar()
     }
 
     onCreate() {

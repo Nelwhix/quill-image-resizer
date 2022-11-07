@@ -17,11 +17,12 @@ export default class BlotSpec {
         return [AlignAction, ResizeAction, DeleteAction];
     }
 
-    getTargetElement(): HTMLElement | null {
-        return null
+    getTargetElement(): HTMLElement {
+
+        return 
     }
 
-    getOverlayElement(): HTMLElement | null {
+    getOverlayElement(){
         return this.getTargetElement()
     }
 

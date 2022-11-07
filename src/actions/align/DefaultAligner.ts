@@ -1,12 +1,13 @@
 import { AlignOptions } from "../../Options";
 import { Alignment } from "./Alignment";
+import { Aligner } from "./Aligner";
 
 
 const LEFT_ALIGN = "left";
 const CENTER_ALIGN = "center";
 const RIGHT_ALIGN = "right";
 
-export default class Aligner {
+export default class DefaultAligner implements Aligner {
     alignments: Object
     alignAttribute: string;
     applyStyle: boolean;
@@ -28,13 +29,13 @@ export default class Aligner {
                 icon: options.icons.center,
                 apply: (el: HTMLElement) => {
                     this.setAlignment(el, CENTER_ALIGN)
-                    this.setStyle(el, 'block', undefined, 'auto')
+                    this.setStyle(el, 'block', 'none', 'auto')
                 }
             },
             RIGHT_ALIGN: {
                 name: RIGHT_ALIGN,
                 icon: options.icons.right,
-                apply: (el: HTMLElement) =>{
+                apply: (el: HTMLElement) => {
                     this.setAlignment(el, RIGHT_ALIGN)
                     this.setStyle(el, 'inline', 'right', '0 0 1em 1em')
                 }
@@ -48,10 +49,14 @@ export default class Aligner {
 
     clear(el: HTMLElement) {
         el.removeAttribute(this.alignAttribute)
-        this.setStyle(el, undefined, undefined, undefined)
+        this.setStyle(el, '', '', '')
     }
 
-    setStyle(el: HTMLElement, display?: string, float?: string, margin?: string) {
+    isAligned(el: HTMLElement, alignment: Alignment): boolean {
+        return el.getAttribute(this.alignAttribute) === alignment.name;
+    }
+
+    setStyle(el: HTMLElement, display: string, float: string, margin: string) {
         if (this.applyStyle) {
             if (display) {
                 el.style.setProperty('display', display)
